@@ -1,0 +1,51 @@
+trees
+str(trees)
+dim(trees)
+hist(trees$Girth)
+hist(trees$Volume)
+is.na(trees)  #결측치 확인
+is.na(trees$Girth)  #항목 결측치 확인
+sum(is.na(trees))  #합으로 결측치 확인
+sum(is.na(trees$Girth))
+colnames(trees)
+mean(trees$Girth)
+summary(trees)
+
+#줄기 잎 그림
+stem(trees$Girth)
+stem(trees$Height)
+stem(trees$Volume)
+
+boxplot(trees$Girth)
+boxplot(trees$Height)
+boxplot(trees$Volume)
+boxplot(trees)
+
+#correlation coefficient # 상관관계
+cor(trees)
+plot(trees$Girth,trees$Height)
+plot(trees$Girth,trees$Volume)
+plot(trees$Volume,trees$Height)
+#linear regression # 1차 직선 회귀
+fit<-lm(trees$Volume~trees$Girth, data=trees)
+abline(fit)
+summary(fit)
+predict(fit)
+
+fit2<-lm(trees$Height~trees$Volume, data=trees)
+abline(fit2)
+summary(fit2)
+predict(fit2)
+
+fit3<-lm(trees$Height~trees$Girth, data=trees)
+plot(trees$Girth,trees$Height)
+abline(fit3)
+summary(fit3)
+predict(fit3)
+
+library(psych)
+hist(trees$Girth, probability = T)
+
+#정규성 검정
+#skew(왜도)- 양수면 오른쪽으로 꼬리가 김, 음수면 왼쪽으로 꼬리가 김
+#kurtosis(첨도) - 양수면 표준분포보다 높음
