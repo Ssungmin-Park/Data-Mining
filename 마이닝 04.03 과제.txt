@@ -1,0 +1,34 @@
+mtcars
+install.packages("dplyr")
+library(dplyr)
+
+nrow(mtcars)
+str(mtcars)
+
+# 조건에 맞는 데이터 추출하기
+filter(mtcars, cyl == 4)
+
+# 지정한 변수만 추출하기
+head(select(mtcars, am, gear))
+
+# 오름차순 정렬하기
+head(arrange(mtcars, wt))
+
+# 새로운 열 추가하기
+head(mutate(mtcars, years = "1974"))
+
+# 중복 값 제거하기
+distinct(mtcars, cyl)
+
+# 그룹별로 요약하기
+gr_cyl <- group_by(mtcars, cyl)
+summarise(gr_cyl, n())
+
+
+# cyl별로 그룹화하여 hp(마력)가 가장 높은 차 찾기
+library(dplyr)
+
+mtcars %>%
+  group_by(cyl) %>%                 # cyl별로 그룹화
+  filter(hp == max(hp)) %>%         # 각 그룹 내에서 hp가 최대인 행을 필터링
+  arrange(cyl, desc(hp))            # cyl별로 정렬 (선택 사항)
