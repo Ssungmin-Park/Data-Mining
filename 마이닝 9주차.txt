@@ -1,0 +1,46 @@
+trees
+plot(trees$Girth, trees$Height)
+fit<-lm(Height~Girth, data=trees)
+abline(fit)
+
+pairs(trees)
+cor(trees)
+
+cov(trees)
+cov(trees)
+cor.test(trees$Girth, trees$Volume)
+cor.test(trees$Girth, trees$Height)
+
+plot(trees$Girth, trees$Height)
+fit<-lm(Height~Girth, data=trees)
+abline(fit)
+lm(Height~Girth)
+
+summary(fit)
+
+#1. 등분산성 검정 (Breusch-Pagan 테스트트)
+library(lmtest)
+bptest(fit)
+
+#1. 잔차 대 적합값 그래프 (등분산성 확인)
+plot(fitted(fit),residuals(fit),xlab = "적합값",ylab = "잔차",main = "잔차 대 적합값 그래프")
+abline(h=0,col = "red",lty=2)
+
+#2. 정규성 검정 (Shapiro-Wilk 테스트)
+shapiro.test(residuals(fit))
+#잔차의 히스토 그램 (정규성 확인)
+hist(residuals(fit),xlab = "잔차",main = "잔차의 히스토그램",breaks = 10,col = "lightblue")
+
+#2. 정규성 검정 (Shapiro-Wilk 테스트)
+shapiro.test(residuals(fit))
+#잔차의 히스토 그램 (정규성 확인)
+hist(residuals(fit),xlab = "잔차",main = "잔차의 히스토그램",breaks = 10,col = "lightblue")
+#잔차의 Q-Q플롯 (정규성 확인)
+qqnorm(residuals(fit))
+qqline(residuals(fit),col="red")
+
+#3. 독립성 검정 (Durbin-watson 테스트)
+library(car)
+durbinWatsonTest(fit)
+plot(1:length(residuals(fit)),residuals(fit),xlab = "관측치 순서", ylab = "잔차",main = "관측치 순서에 따른 잔차")
+abline(h=0,col = "red",lty=2)
