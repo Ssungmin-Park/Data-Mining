@@ -1,0 +1,57 @@
+##One Way Anova
+library(multcomp)
+data("cholesterol")
+head(cholesterol)
+chol<-cholesterol[1:30,]
+chol$trt<-factor(chol$trt, levels=c("1times","2times","4times"),labels=c("drugA","drugB","DrugC"))
+out<-lm(response~trt,data=chol)
+summary(out)
+
+anova(out)
+
+out<-lm(response~trt,data=chol)
+dunnett<-glht(out,linfct=mcp(trt="Dunnett"))
+summary(dunnett)
+
+out<-lm(response~trt,data=chol)
+tukey<-glht(out,linfct=mcp(trt="Tukey"))
+summary(tukey)
+
+
+data("ToothGrowth")
+
+str(ToothGrowth)
+
+attach(ToothGrowth)
+
+tapply(len, supp, mean)
+tapply(len, dose, mean)
+tapply(len, list(supp, dose), mean)
+aggregate(len , list(supp,dose), mean)
+
+ToothGrowth$supp<-factor(ToothGrowth$supp)
+ToothGrowth$supp<-factor(ToothGrowth$dose)
+levels(ToothGrowth$supp)
+levels(ToothGrowth$dose)
+lm(len~supp*dose,data=ToothGrowth)
+out<-lm(len~supp*dose,data=ToothGrowth)
+anova(out)
+
+out<-lm(len~supp+dose+supp*dose,data=ToothGrowth)
+anova(out)
+
+out1<-lm(len~supp,data=ToothGrowth)
+dunnett<-glht(out1,linfct = mcp(supp="Dunnett"))
+summary(dunnett)
+
+out2 <- lm(len ~ supp, data = ToothGrowth)
+dunnett2 <- glht(out2, linfct = mcp(supp = "Dunnett"))
+summary(dunnett2)
+
+out3 <- lm(len ~ dose, data = ToothGrowth)
+tukey1 <- glht(out3, linfct = mcp(dose = "Tukey"))
+summary(tukey1)
+
+out4 <- lm(len ~ supp, data = ToothGrowth)
+tukey2 <- glht(out4, linfct = mcp(supp = "Tukey"))
+summary(tukey2)
