@@ -1,0 +1,13 @@
+carData::TitanicSurvival
+library(carData)
+data("TitanicSurvival")
+df <- TitanicSurvival
+df <- na.omit(df)
+# Factor로 변환 및 기준 수준 설정
+df$survived <- factor(df$survived, levels = c("no", "yes"))
+
+# 로지스틱 회귀 모델
+model <- glm(survived ~ sex + age + passengerClass, data = df, family = "binomial")
+
+# 결과 출력
+summary(model)
