@@ -1,0 +1,23 @@
+library(rpart)
+data(iris)
+str(iris)
+##의사결정나무 모델
+c<-rpart(Species~.,data=iris)
+c
+plot(c,compress=T,margin=0.3)
+text(c, cex=1.5)
+
+pc<-predict(c, newdata=iris, type="class")
+summary(pc)
+table(pc, iris$Species, dnn=c("Actual", "Predicted"))
+mean(iris$Species==pc)
+
+plotcp(c)
+
+
+bc<-rpart(Species~.,data=iris,cp=0.0100)
+pbc<-predict(bc,newdata=iris,type="class")
+bc$cptable
+
+table(pbc,iris$Species,dnn=c("Actual","Predicted"))
+mean(iris$Species==pbc)
