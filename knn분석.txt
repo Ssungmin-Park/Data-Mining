@@ -48,3 +48,11 @@ ctrl<-trainControl(method = "repeatedcv",repeats = 3)
 preproc
 knnFit<-train(Direction~.,data=train,method="knn",trControl=ctrl,preProcess=c("center","scale"),tuneLength=20)
 knnFit
+
+library(kknn)
+m<-dim(iris)[1]
+val<-sample(1:m, size=round(m/3),replace = FALSE, prob = rep(1/m,m))
+iris.learn<-iris[-val,]
+iris.val<-iris[val,]
+cv<-train.kknn(Species~., iris.learn, iris.val,ks=seq(1,50,by=2),scale=F)
+cv
