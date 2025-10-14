@@ -1,0 +1,44 @@
+iris_sub<-subset(iris, select = c("Sepal.Length", "Sepal.Width", "Species"), subset = Species %in% c("setosa", "virginica"))
+iris_sub$Species<-factor(iris_sub$Species)
+head(iris_sub)
+tail(iris_sub)
+library(ggplot2)
+ggplot(iris_sub, aes(x = Sepal.Length, y = Sepal.Width))+geom_point(aes(color = Species, shape = Species), size = 4)
+
+##2차원 데이터로 보여주기
+library(e1071)
+iris_svm<-svm(Species~.,data=iris_sub, kernel = "linear", cost = 1)
+summary(iris_svm)
+iris_svm$index
+iris_svm$SV
+iris_sub[iris_svm$index, ]
+ggplot(iris_sub, aes(x = Sepal.Length, y = Sepal.Width))+geom_point(aes(color = Species, shape = Species), size = 3)+geom_point(data = iris_sub[iris_svm$index, c(1,2)], color = "darkblue", shape = 21, stroke = 1.0, size = 5)
+
+w<-t(iris_svm$coefs)%*% iris_svm$SV
+w
+b<-iris_svm$rho
+b
+ggplot(iris_sub, aes(x = Sepal.Length, y = Sepal.Width
+))+geom_point(aes(color = Species, shape = Species), size = 3)+geom_point(data = iris_sub[iris_svm$index, c(1,2)],color = "darkblue", shape = 21, stroke = 1.0, size = 5
+)+geom_abline(intercept = -b/w[1,2], slope = -(w[1,1]/w[1,2]), color="dimgray", lty = "dashed", lwd =1)
+
+##cost=100
+iris_svm2<-svm(Species~.,data=iris_sub, kernel = "linear", cost = 100)
+w<-t(iris_svm2$coefs)%*% iris_svm2$SV
+b<-iris_svm2$rho
+ggplot(iris_sub, aes(x = Sepal.Length, y = Sepal.Width
+))+geom_point(aes(color = Species, shape = Species), size = 3)+geom_point(data = iris_sub[iris_svm2$index, c(1,2)],color = "darkblue", shape = 21, stroke = 1.0, size = 5
+)+geom_abline(intercept = -b/w[1,2], slope = -(w[1,1]/w[1,2]), color="dimgray", lty = "dashed", lwd =1)
+p2<-predict(iris_svm2, iris_sub, decision.values = TRUE)
+table(p2, iris_sub$Species)
+
+data(iris)
+##{e1071}의 svm() 수행
+library(e1071)
+f_0.1<-svm(Species~.,data=iris,type="C-classification",kernel="radial",cost=10,gamma=0.1)
+summary(f_0.1)
+p_0.1<-predict(f_0.1,iris,decision.values = TRUE)
+summary(p_0.1)
+acc_0.1<-table(p_0.1,iris$Species)
+classAgreement(acc_0.1)
+plot(f_0.1,iris, Petal.Width~Petal.Length,slice=list(Sepal.Width=3, Sepal.Length=4))
